@@ -23,9 +23,11 @@ class RegistrationFormType extends AbstractType
                 'row_attr'=> [
                     'class' => 'input-field'],
                     'label' => 'Email',
-                    'id' => 'email',
-                    'type' => 'email',
-                    'name' => 'email',
+                    'attr' => [
+                        'id' => 'email',
+                        'type' => 'email',
+                        'name' => 'email',
+                    ]
                 ])
             ->add('name', TextType::class, [
                 'row_attr' => [
