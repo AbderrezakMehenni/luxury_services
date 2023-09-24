@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Date;
 
 #[ORM\Entity(repositoryClass: CandidatRepository::class)]
 class Candidat
@@ -36,9 +37,6 @@ class Candidat
 
     #[ORM\Column]
     private ?bool $ispassport = null;
-
-    #[ORM\Column]
-    private ?int $date_naissance = null;
 
     #[ORM\Column(length: 255)]
     private ?string $lieu_naissance = null;
@@ -70,40 +68,32 @@ class Candidat
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_deleted = null;
 
- 
-
-
-
-
-
     #[ORM\OneToOne(inversedBy: 'candidat', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $user = null;
+    private ?User $user = null;
 
     #[ORM\OneToOne(inversedBy: 'PassportCandidat', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?media $passport = null;
+    private ?Media $passport = null;
 
     #[ORM\OneToOne(inversedBy: 'CvCandidat', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?media $cv = null;
+    private ?Media $cv = null;
 
     #[ORM\OneToOne(inversedBy: 'ProfilPictureCandidat', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?media $profil_picture = null;
+    private ?Media $profil_picture = null;
 
     #[ORM\OneToMany(mappedBy: 'candidat', targetEntity: Candidature::class, orphanRemoval: true)]
     private Collection $Candidature;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date_naissance = null;
 
     public function __construct()
     {
         $this->Candidature = new ArrayCollection();
     }
-
-
-
-  
-
 
     public function getId(): ?int
     {
@@ -190,18 +180,6 @@ class Candidat
     public function setIspassport(bool $ispassport): static
     {
         $this->ispassport = $ispassport;
-
-        return $this;
-    }
-
-    public function getDateNaissance(): ?int
-    {
-        return $this->date_naissance;
-    }
-
-    public function setDateNaissance(int $date_naissance): static
-    {
-        $this->date_naissance = $date_naissance;
 
         return $this;
     }
@@ -328,48 +306,48 @@ class Candidat
 
 
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(user $user): static
+    public function setUser(User $user): static
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getPassport(): ?media
+    public function getPassport(): ?Media
     {
         return $this->passport;
     }
 
-    public function setPassport(media $passport): static
+    public function setPassport(Media $passport): static
     {
         $this->passport = $passport;
 
         return $this;
     }
 
-    public function getCv(): ?media
+    public function getCv(): ?Media
     {
         return $this->cv;
     }
 
-    public function setCv(media $cv): static
+    public function setCv(Media $cv): static
     {
         $this->cv = $cv;
 
         return $this;
     }
 
-    public function getProfilPicture(): ?media
+    public function getProfilPicture(): ?Media
     {
         return $this->profil_picture;
     }
 
-    public function setProfilPicture(media $profil_picture): static
+    public function setProfilPicture(Media $profil_picture): static
     {
         $this->profil_picture = $profil_picture;
 
@@ -406,6 +384,15 @@ class Candidat
         return $this;
     }
 
+    public function getDateNaissance(): ?\DateTimeInterface
+    {
+        return $this->date_naissance;
+    }
 
-   
+    public function setDateNaissance(\DateTimeInterface $date_naissance): static
+    {
+        $this->date_naissance = $date_naissance;
+
+        return $this;
+    }
 }
